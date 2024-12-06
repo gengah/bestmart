@@ -30,8 +30,8 @@ const specialOffersQuery = groq`*[_type == 'product' && position == 'on Sale']{
 } | order(_createdAt asc)`;
 
 const SinglePage = async ({ params }: Props) => {
-  // Await params to ensure it's ready
-  const { slug } = await params;
+  // Destructure slug directly from params
+  const { slug } = params;
 
   const query = groq`*[_type == 'product' && slug.current == $slug][0]{
     ...
@@ -73,5 +73,6 @@ const SinglePage = async ({ params }: Props) => {
 };
 
 export default SinglePage;
+
 
 
