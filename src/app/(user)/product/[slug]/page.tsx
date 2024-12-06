@@ -13,16 +13,12 @@ interface PageParams {
   slug: string;
 }
 
-interface Props {
-  params: PageParams;
-}
-
 export const generateStaticParams = async () => {
   const query = groq`*[_type == 'product']{
     slug
   }`;
 
-  const slugs: any = await client.fetch(query);
+  const slugs = await client.fetch(query);
   const slugRoutes = slugs.map((slug: any) => slug?.slug?.current);
   return slugRoutes.map((slug: string) => ({ slug }));
 };
@@ -31,8 +27,8 @@ const specialOffersQuery = groq`*[_type == 'product' && position == 'on Sale']{
   ...
 } | order(_createdAt asc)`;
 
-const SinglePage = async ({ params }: Props) => {
-  const { slug } = params; // No `await` here
+const SinglePage = async ({ params }: { params: PageParams }) => {
+  const { slug } = params; // No need for `await` here as params is not a Promise
 
   const query = groq`*[_type == 'product' && slug.current == $slug][0]{
     ...
@@ -74,6 +70,7 @@ const SinglePage = async ({ params }: Props) => {
 };
 
 export default SinglePage;
+
 
 
 
