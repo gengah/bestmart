@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Container from "@/components/Container";
 import Onsale from "@/components/Onsale";
 import { client, urlFor } from "@/lib/sanityClient";
@@ -9,41 +8,35 @@ import ProudctInfo from "@/components/ProudctInfo";
 import { PortableText } from "@portabletext/react";
 import { RichText } from "@/components/RichText";
 
-interface PageParams {
-  slug: string;
+interface Props {
+  params: {
+    slug: string;
+  };
 }
 
 export const generateStaticParams = async () => {
   const query = groq`*[_type == 'product']{
-    slug
-  }`;
+        slug
+    }`;
 
-  const slugs = await client.fetch(query);
+  const slugs: any = await client.fetch(query);
   const slugRoutes = slugs.map((slug: any) => slug?.slug?.current);
-  return slugRoutes.map((slug: string) => ({ slug }));
+  return slugRoutes?.map((slug: string) => ({
+    slug,
+  }));
 };
 
 const specialOffersQuery = groq`*[_type == 'product' && position == 'on Sale']{
-  ...
-} | order(_createdAt asc)`;
+    ...
+   } | order(_createdAt asc)`;
 
-const SinglePage = async ({ params }: { params: PageParams }) => {
-  const { slug } = params; // No need for `await` here as params is not a Promise
-
+const SinglePage = async ({ params: { slug } }: Props) => {
   const query = groq`*[_type == 'product' && slug.current == $slug][0]{
     ...
   }`;
 
   const product: ProductProps = await client.fetch(query, { slug });
   const specialOffersProduct = await client.fetch(specialOffersQuery);
-
-  if (!product) {
-    return (
-      <Container>
-        <p>Product not found.</p>
-      </Container>
-    );
-  }
 
   return (
     <Container className="my-10">
