@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Container from "@/components/Container";
 import Onsale from "@/components/Onsale";
@@ -5,9 +6,9 @@ import { client, urlFor } from "@/lib/sanityClient";
 import { groq } from "next-sanity";
 import Image from "next/image";
 import { ProductProps } from "../../../../../type";
-import ProductInfo from "@/components/ProductInfo"; // Fix the typo "ProudctInfo" to "ProductInfo"
 import { PortableText } from "@portabletext/react";
 import { RichText } from "@/components/RichText";
+import ProudctInfo from "@/components/ProudctInfo";
 
 interface Props {
   params: { slug: string };
@@ -60,7 +61,7 @@ const SinglePage = async ({ params }: Props) => {
 
         {/* Product info */}
         <div className="w-full md:col-span-2 xl:col-span-3 xl:p-14 flex flex-col gap-6 justify-center">
-          <ProductInfo product={product} />
+          <ProudctInfo product={product} />
         </div>
       </div>
 
