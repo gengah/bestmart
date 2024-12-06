@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Container from "@/components/Container";
 import Onsale from "@/components/Onsale";
 import { client, urlFor } from "@/lib/sanityClient";
