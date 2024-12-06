@@ -9,10 +9,12 @@ import ProudctInfo from "@/components/ProudctInfo";
 import { PortableText } from "@portabletext/react";
 import { RichText } from "@/components/RichText";
 
+interface PageParams {
+  slug: string;
+}
+
 interface Props {
-  params: {
-    slug: string;
-  };
+  params: PageParams;
 }
 
 export const generateStaticParams = async () => {
@@ -30,8 +32,7 @@ const specialOffersQuery = groq`*[_type == 'product' && position == 'on Sale']{
 } | order(_createdAt asc)`;
 
 const SinglePage = async ({ params }: Props) => {
-  // Destructure slug directly from params
-  const { slug } = params;
+  const { slug } = params; // No `await` here
 
   const query = groq`*[_type == 'product' && slug.current == $slug][0]{
     ...
@@ -73,6 +74,7 @@ const SinglePage = async ({ params }: Props) => {
 };
 
 export default SinglePage;
+
 
 
 
